@@ -21,7 +21,7 @@ import sys
 
 # Sum of all sales (values) is initialized with zero, we just started
 count = 0
-
+total_sales = 0.0
 # Previous key is initialized with None, we just started
 previous_key = None
 
@@ -42,22 +42,21 @@ for line in sys.stdin:
     # This means the line starts with a new key (key changes e.g. from "Visa" to "Cash")
     # Remember that our keys are sorted
     if previous_key != None and previous_key != key:
-        # Then write the result of the old key (Key=category, Value= Sum of Sales)
-        # to the standart output (stdout)
-        # Key and value are seperated by a tab (\t)
-        # Line ends with new line (\n)
-        if count > 114:
-            sys.stdout.write("{0}\t{1}\n".format(previous_key, count))
+        avg = total_sales / count
+        sys.stdout.write("{0}\t{1:.2f}\n".format(previous_key, avg))
+        total_sales = 0.0
         count = 0
 
     # Add the value to the total sales
     # a += b is the same as a = a + b
     # the float function transforms the value
     # to a float data type (like decimal)
+    total_sales += float(value)
     count += 1
     # the previous key for the next iteration is the current key of the this iteration 
     previous_key = key
 
 # write the last result to stdout
-if count > 114:
-    sys.stdout.write("{0}\t{1}\n".format(previous_key, count))
+if count > 0:
+    avg = total_sales / count
+    sys.stdout.write("{0}\t{1:.2f}\n".format(previous_key, avg))
